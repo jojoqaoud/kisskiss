@@ -21,7 +21,40 @@
         footer { padding: 40px; text-align: center; width: 100%; color: var(--dark-pink); font-family: 'Dancing Script', cursive; font-size: 1.5rem; margin-top: auto; }
         .heart-particle { position: fixed; color: #ff4d4d; pointer-events: none; animation: floatUp 2s linear forwards; z-index: 999; }
         @keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-100px) scale(0); opacity: 0; } }
-    </style>
+   /* تنسيق الصور واللون البينك */
+.gallery-stack {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 50px auto;
+}
+
+.gallery-stack img {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    /* برواز بينك سميك زي اللي في الصورة */
+    border: 10px solid #ffb6c1; 
+    box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+    transition: all 0.4s ease;
+    cursor: pointer;
+    object-fit: cover;
+}
+
+/* توزيع الميلان للصور فوق بعضها */
+.img-1 { transform: rotate(-10deg); z-index: 1; }
+.img-2 { transform: rotate(5deg); z-index: 2; top: 10px; left: 15px; }
+.img-3 { transform: rotate(-5deg); z-index: 3; top: 20px; left: 30px; }
+
+/* تأثير لما الماوس يقرب عشان تعرف تدوس */
+.gallery-stack:hover img {
+    transform: rotate(0deg) translateX(30px);
+    margin-right: 50px;
+}
+	
+	
+	
+	</style>
 </head>
 <body onmousemove="createHeart(event)">
 
@@ -59,13 +92,21 @@
 </section>
 
 <section id="photos" class="content-section">
-    <div class="video-card">
-        <h2 style="font-family: 'Dancing Script'; color: var(--dark-pink);">📽️ Our Story</h2>
-        <video controls>
-            <source src="ourvideo.MP4" type="video/mp4">
-        </video>
-    </div>
+   <div class="gallery-stack">
+    <a href="link-to-big-image1.jpg" data-lightbox="pink-gallery">
+        <img src="https://drive.google.com/file/d/1v7xcY91EmtM2_TW9aSu3Esv5kksbMDH2/view?usp=drive_link" class="img-1">
+    </a>
+    
+    <a href="link-to-big-image2.jpg" data-lightbox="pink-gallery">
+        <img src="https://drive.google.com/file/d/1t6_3E3c3zSYfHjlBOVRP8SSXR2REbU_A/view?usp=sharing" class="img-2">
+    </a>
+    
+    <a href="link-to-big-image3.jpg" data-lightbox="pink-gallery">
+        <img src="https://drive.google.com/file/d/1Xv1IIOXOeQDQ5-FkZ46RSfFNDaxcBO0O/view?usp=sharing" class="img-3">
+    </a>
+</div> 
 </section>
+	
 
 <footer>I love you | Mwah 💋</footer>
 
