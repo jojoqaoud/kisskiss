@@ -59,133 +59,170 @@
         <audio controls style="width: 100%;"><source src="https://files.catbox.moe/bzihnn.mp3" type="audio/mpeg"></audio>
     </div>
 </section>
-<section id="photos" class="content-section">
-    <div class="stack-wrapper">
-        <h2 style="font-family: 'Dancing Script'; color: #d63384;">Our Memories ✨</h2>
-        
-        <div class="stack-container">
-            <div class="stack-card" ondblclick="openCard(this)">
-                <video controls>
-                    <source src="ourvideo.MP4" type="video/mp4">
-                </video>
-                <div class="card-label">Our Video 🎬</div>
-            </div>
 
-            <div class="stack-card" ondblclick="openCard(this)">
-                <img src="photo1.jpg.jpg" alt="Memory 1">
-                <div class="card-label">Sweet Moment ❤️</div>
-            </div>
 
-            <div class="stack-card" ondblclick="openCard(this)">
-                <img src="photo2.jpg.jpg" alt="Memory 2">
-                <div class="card-label">Always Together 🌹</div>
-            </div>
-        </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Love ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --pink: #ffb7b7; --hot-pink: #d63384; --bg: #fdf2f2; }
+        body { font-family: 'Quicksand', sans-serif; background-color: var(--bg); margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
         
-        <p style="margin-top: 20px; font-size: 0.9rem; color: #888;">Double click to pull a card out!</p>
+        header { padding: 30px; text-align: center; }
+        h1 { font-family: 'Dancing Script', cursive; color: var(--hot-pink); font-size: 3rem; margin: 0; }
+
+        nav { display: flex; gap: 10px; margin-bottom: 20px; z-index: 100; }
+        nav button { background: white; border: 2px solid var(--pink); color: var(--hot-pink); padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        nav button.active { background: var(--hot-pink); color: white; }
+
+        .content-section { display: none; width: 90%; max-width: 500px; text-align: center; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- STACK SWIPE STYLE --- */
+        .stack-container {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            margin: 40px auto;
+            perspective: 1000px;
+        }
+
+        .stack-card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 20px;
+            padding: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 4px solid white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* رصة الكروت الأولية */
+        .stack-card:nth-child(1) { z-index: 3; transform: scale(1); }
+        .stack-card:nth-child(2) { z-index: 2; transform: scale(0.95) translateY(15px); opacity: 0.9; }
+        .stack-card:nth-child(3) { z-index: 1; transform: scale(0.9) translateY(30px); opacity: 0.8; }
+
+        .stack-card img, .stack-card video {
+            width: 100%;
+            height: 85%;
+            object-fit: cover;
+            border-radius: 12px;
+            pointer-events: none; /* عشان الدبل كليك يشتغل على الكارت نفسه */
+        }
+        
+        /* استثناء للفيديو عشان يشتغل لما الكارت يكون قدام */
+        .stack-card:nth-child(1) video { pointer-events: auto; }
+
+        .card-label { margin-top: 10px; font-weight: bold; color: var(--hot-pink); font-family: 'Dancing Script', cursive; font-size: 1.2rem; }
+
+        /* حركة الـ Swipe للجنب */
+        .swiping-left {
+            transform: translateX(-130%) rotate(-15deg) scale(0.9) !important;
+            opacity: 0 !important;
+            z-index: 10 !important;
+        }
+
+        footer { padding: 20px; color: var(--hot-pink); font-family: 'Dancing Script'; font-size: 1.5rem; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Thinking of You...</h1>
+</header>
+
+<nav>
+    <button onclick="showSection('letter')" id="btn-letter">The Letter</button>
+    <button onclick="showSection('photos')" id="btn-photos" class="active">Memories</button>
+</nav>
+
+<section id="letter" class="content-section">
+    <div style="background:white; padding:30px; border-radius:20px; text-align:left; box-shadow: 0 10px 20px rgba(0,0,0,0.05);">
+        <h2 style="font-family: 'Dancing Script'; color: var(--hot-pink);">My Love,</h2>
+        <p>This is a small place for our memories. Double click the cards to swipe! ❤️</p>
     </div>
 </section>
 
-<section id="photos" class="content-section">
-    <div class="stack-wrapper">
-        <h2 style="font-family: 'Dancing Script'; color: #d63384;">Double Click to see the next one! ✨</h2>
-        
-        <div class="stack-container" id="cardStack">
-            <div class="stack-card" ondblclick="rotateCard()">
-                <video controls>
-                    <source src="ourvideo.MP4" type="video/mp4">
-                </video>
-                <div class="card-label">Our Story 🎬</div>
-            </div>
+<section id="photos" class="content-section" style="display: block;">
+    <div class="stack-container" id="cardStack">
+        <div class="stack-card" ondblclick="swipeCard()">
+            <video controls>
+                <source src="ourvideo.MP4" type="video/mp4">
+            </video>
+            <div class="card-label">Our Story 🎬</div>
+        </div>
 
-            <div class="stack-card" ondblclick="rotateCard()">
-                <img src="photo1.jpg.jpg" alt="Memory 1">
-                <div class="card-label">Sweet Moment ❤️</div>
-            </div>
+        <div class="stack-card" ondblclick="swipeCard()">
+            <img src="photo1.jpg.jpg" alt="Memory 1">
+            <div class="card-label">Sweet Moment ❤️</div>
+        </div>
 
-            <div class="stack-card" ondblclick="rotateCard()">
-                <img src="photo2.jpg.jpg" alt="Memory 2">
-                <div class="card-label">Always Together 🌹</div>
-            </div>
+        <div class="stack-card" ondblclick="swipeCard()">
+            <img src="photo2.jpg.jpg" alt="Memory 2">
+            <div class="card-label">Always Together 🌹</div>
         </div>
     </div>
+    <p style="color: #888; font-size: 0.9rem;">Double Click to Swipe! 😉</p>
 </section>
 
-<style>
-    .stack-wrapper { text-align: center; padding: 20px 0; }
-    
-    .stack-container {
-        position: relative;
-        width: 300px;
-        height: 400px;
-        margin: 40px auto;
-        perspective: 1000px; /* بيدي بُعد تالت للرصة */
-    }
-
-    .stack-card {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background: white;
-        border-radius: 20px;
-        padding: 12px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        cursor: pointer;
-        border: 4px solid white;
-        user-select: none;
-    }
-
-    /* توزيع أولي للكروت فوق بعض */
-    .stack-card:nth-child(1) { transform: translateZ(0px) rotate(0deg); z-index: 3; }
-    .stack-card:nth-child(2) { transform: translateZ(-20px) rotate(3deg) translateY(10px); z-index: 2; opacity: 0.9; }
-    .stack-card:nth-child(3) { transform: translateZ(-40px) rotate(-3deg) translateY(20px); z-index: 1; opacity: 0.8; }
-
-    .stack-card img, .stack-card video {
-        width: 100%;
-        height: 85%;
-        object-fit: cover;
-        border-radius: 12px;
-    }
-
-    .card-label { margin-top: 10px; font-weight: bold; color: #d63384; }
-
-    /* الأنيميشن لما الكارت يطير */
-    .fly-away {
-        transform: translateX(150%) rotate(30deg) !important;
-        opacity: 0 !important;
-    }
-</style>
+<footer>I love you | Mwah 💋</footer>
 
 <script>
-    function rotateCard() {
+    function showSection(id) {
+        document.querySelectorAll('.content-section').forEach(s => s.style.display = 'none');
+        document.getElementById(id).style.display = 'block';
+        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+        document.getElementById('btn-' + id).classList.add('active');
+    }
+
+    function swipeCard() {
         const stack = document.getElementById('cardStack');
         const cards = stack.children;
-        if (cards.length === 0) return;
+        if (cards.length < 2) return;
 
-        const topCard = cards[0]; // أول كارت فوق
+        const topCard = cards[0];
 
-        // 1. نخليه يطير لبرة
-        topCard.classList.add('fly-away');
+        // 1. زحلقة الكارت للجنب
+        topCard.classList.add('swiping-left');
 
-        // 2. بعد ما يخلص الطيران، ننقله لآخر الرصة تحت ونرجعه تاني
         setTimeout(() => {
-            topCard.classList.remove('fly-away');
-            stack.appendChild(topCard); // بينقله أوتوماتيك لآخر الـ Div
-            updateCardPositions();
-        }, 600);
-    }
+            // 2. نقله لآخر الرصة وتصفير حركته
+            topCard.classList.remove('swiping-left');
+            stack.appendChild(topCard);
 
-    function updateCardPositions() {
-        const cards = document.querySelectorAll('.stack-card');
-        cards.forEach((card, index) => {
-            // إعادة ترتيب الـ z-index والـ transform لكل الكروت
-            card.style.zIndex = cards.length - index;
-            card.style.opacity = 1 - (index * 0.1);
-            card.style.transform = `translateZ(-${index * 20}px) translateY(${index * 10}px) rotate(${index % 2 === 0 ? index * 2 : -index * 2}deg)`;
-        });
+            // 3. إعادة ترتيب الكروت الباقية بنعومة
+            Array.from(cards).forEach((card, index) => {
+                card.style.transition = "all 0.6s ease";
+                if (index === 0) {
+                    card.style.zIndex = "3";
+                    card.style.transform = "scale(1) translateY(0)";
+                    card.style.opacity = "1";
+                    card.querySelector('video, img').style.pointerEvents = "auto";
+                } else if (index === 1) {
+                    card.style.zIndex = "2";
+                    card.style.transform = "scale(0.95) translateY(15px)";
+                    card.style.opacity = "0.9";
+                } else {
+                    card.style.zIndex = "1";
+                    card.style.transform = "scale(0.9) translateY(30px)";
+                    card.style.opacity = "0.8";
+                }
+            });
+        }, 500);
     }
 </script>
+
+</body>
+</html>
 <footer>I love you | Mwah 💋</footer>
 
 <script>
