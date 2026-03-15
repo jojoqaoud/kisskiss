@@ -22,63 +22,7 @@
         .heart-particle { position: fixed; color: #ff4d4d; pointer-events: none; animation: floatUp 2s linear forwards; z-index: 999; }
         @keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-100px) scale(0); opacity: 0; } }
 
-    /* شكل الـ Stack */
-    .stack-container {
-        position: relative;
-        height: 450px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 50px;
-    }
 
-    .stack-card {
-        position: absolute;
-        width: 280px;
-        height: 380px;
-        background: white;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        padding: 15px;
-        cursor: pointer;
-        transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-        transform-style: preserve-3d;
-    }
-
-    /* توزيع الكروت فوق بعض بميول خفيف */
-    .stack-card:nth-child(1) { transform: rotate(-5deg) translateY(0); z-index: 3; }
-    .stack-card:nth-child(2) { transform: rotate(3deg) translateY(10px); z-index: 2; }
-    .stack-card:nth-child(3) { transform: rotate(-2deg) translateY(20px); z-index: 1; }
-
-    /* لما الكارت يتفتح (Active) */
-    .stack-card.active {
-        transform: rotate(0deg) scale(1.1) translateY(-50px) !important;
-        z-index: 100 !important;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-    }
-
-    .card-content { pointer-events: none; } /* يخلي الدوسة تيجي في الكارت نفسه */
-    .stack-card.active .card-content { pointer-events: auto; } /* يسمح بتشغيل الفيديو لما يتفتح */
-
-    .card-back {
-        display: none;
-        font-size: 0.8rem;
-        color: #888;
-        margin-top: 10px;
-    }
-    .stack-card.active .card-back { display: block; }
-</style>
-
-<script>
-    function openCard(card) {
-        // لو الكارت مفتوح نقفله، ولو مقفول نفتح ونقفل الباقي
-        if (card.classList.contains('active')) {
-            card.classList.remove('active');
-        } else {
-            document.querySelectorAll('.stack-card').forEach(c => c.classList.remove('active'));
-            card.classList.add('active');
-        }
-    }
 </script>
 </head>
 <body onmousemove="createHeart(event)">
@@ -115,40 +59,100 @@
         <audio controls style="width: 100%;"><source src="https://files.catbox.moe/bzihnn.mp3" type="audio/mpeg"></audio>
     </div>
 </section>
-
 <section id="photos" class="content-section">
-    <h2 style="font-family: 'Dancing Script'; color: var(--hot-pink);">✨ Our Memories Stack</h2>
-    <p>Double click to open a card! 😉</p>
-    
-    <div class="stack-container">
-        <div class="stack-card" ondblclick="openCard(this)">
-            <div class="card-content">
-                <video controls width="100%">
+    <div class="stack-wrapper">
+        <h2 style="font-family: 'Dancing Script'; color: #d63384;">Our Memories ✨</h2>
+        
+        <div class="stack-container">
+            <div class="stack-card" ondblclick="openCard(this)">
+                <video controls>
                     <source src="ourvideo.MP4" type="video/mp4">
                 </video>
-                <p>Our Video 📽️</p>
+                <div class="card-label">Our Video 🎬</div>
             </div>
-            <div class="card-back">🎬 Double Click to Close</div>
-        </div>
 
-        <div class="stack-card" ondblclick="openCard(this)">
-            <div class="card-content">
-                <img src="photo1.jpg.jpg" style="width:100%; border-radius:10px;">
-                <p>Beautiful Moment ❤️</p>
+            <div class="stack-card" ondblclick="openCard(this)">
+                <img src="photo1.jpg.jpg" alt="Memory 1">
+                <div class="card-label">Sweet Moment ❤️</div>
             </div>
-            <div class="card-back">📸 Double Click to Close</div>
-        </div>
 
-        <div class="stack-card" ondblclick="openCard(this)">
-            <div class="card-content">
-                <img src="photo2.jpg.jpg" style="width:100%; border-radius:10px;">
-                <p>Always Together 🌹</p>
+            <div class="stack-card" ondblclick="openCard(this)">
+                <img src="photo2.jpg.jpg" alt="Memory 2">
+                <div class="card-label">Always Together 🌹</div>
             </div>
-            <div class="card-back">📸 Double Click to Close</div>
         </div>
+        
+        <p style="margin-top: 20px; font-size: 0.9rem; color: #888;">Double click to pull a card out!</p>
     </div>
 </section>
 
+<style>
+    .stack-wrapper {
+        text-align: center;
+        padding: 40px 0;
+    }
+
+    .stack-container {
+        position: relative;
+        width: 300px;
+        height: 400px;
+        margin: 0 auto; /* بيخلي الرصة في نص الصفحة بالظبط */
+    }
+
+    .stack-card {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: white;
+        border-radius: 15px;
+        padding: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        transition: all 0.5s ease-in-out;
+        cursor: pointer;
+        border: 2px solid #fff;
+    }
+
+    /* رصة الكروت (واحد مايل يمين وواحد شمال) */
+    .stack-card:nth-child(1) { transform: rotate(-4deg) translateY(0); z-index: 3; }
+    .stack-card:nth-child(2) { transform: rotate(2deg) translateY(5px); z-index: 2; }
+    .stack-card:nth-child(3) { transform: rotate(-2deg) translateY(10px); z-index: 1; }
+
+    /* لما تدوسي مرتين الكارت "يتسحب" لبرة ويكبر */
+    .stack-card.active {
+        transform: scale(1.15) translateY(-30px) rotate(0deg) !important;
+        z-index: 100 !important;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    .stack-card img, .stack-card video {
+        width: 100%;
+        height: 85%;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .card-label {
+        margin-top: 10px;
+        font-family: 'Quicksand', sans-serif;
+        font-weight: bold;
+        color: #d63384;
+    }
+</style>
+
+<script>
+    function openCard(card) {
+        // لو الكارت مفتوح رجعيه مكانه، لو مقفول افتحيه
+        if (card.classList.contains('active')) {
+            card.classList.remove('active');
+        } else {
+            // نقفل أي كارت تاني مفتوح الأول
+            document.querySelectorAll('.stack-card').forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+        }
+    }
+</script>
 <footer>I love you | Mwah 💋</footer>
 
 <script>
@@ -180,9 +184,7 @@
     // نشغل الخطاب أول ما يفتح
     window.onload = () => showSection('letter');
 </script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+	
 </body>
 </html>
 
