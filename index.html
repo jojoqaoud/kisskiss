@@ -86,71 +86,104 @@
     </div>
 </section>
 
-<style>
-    .stack-wrapper {
-        text-align: center;
-        padding: 40px 0;
-    }
+<section id="photos" class="content-section">
+    <div class="stack-wrapper">
+        <h2 style="font-family: 'Dancing Script'; color: #d63384;">Double Click to see the next one! ✨</h2>
+        
+        <div class="stack-container" id="cardStack">
+            <div class="stack-card" ondblclick="rotateCard()">
+                <video controls>
+                    <source src="ourvideo.MP4" type="video/mp4">
+                </video>
+                <div class="card-label">Our Story 🎬</div>
+            </div>
 
+            <div class="stack-card" ondblclick="rotateCard()">
+                <img src="photo1.jpg.jpg" alt="Memory 1">
+                <div class="card-label">Sweet Moment ❤️</div>
+            </div>
+
+            <div class="stack-card" ondblclick="rotateCard()">
+                <img src="photo2.jpg.jpg" alt="Memory 2">
+                <div class="card-label">Always Together 🌹</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .stack-wrapper { text-align: center; padding: 20px 0; }
+    
     .stack-container {
         position: relative;
         width: 300px;
         height: 400px;
-        margin: 0 auto; /* بيخلي الرصة في نص الصفحة بالظبط */
+        margin: 40px auto;
+        perspective: 1000px; /* بيدي بُعد تالت للرصة */
     }
 
     .stack-card {
         position: absolute;
-        top: 0;
-        left: 0;
         width: 100%;
         height: 100%;
         background: white;
-        border-radius: 15px;
-        padding: 10px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        transition: all 0.5s ease-in-out;
+        border-radius: 20px;
+        padding: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: pointer;
-        border: 2px solid #fff;
+        border: 4px solid white;
+        user-select: none;
     }
 
-    /* رصة الكروت (واحد مايل يمين وواحد شمال) */
-    .stack-card:nth-child(1) { transform: rotate(-4deg) translateY(0); z-index: 3; }
-    .stack-card:nth-child(2) { transform: rotate(2deg) translateY(5px); z-index: 2; }
-    .stack-card:nth-child(3) { transform: rotate(-2deg) translateY(10px); z-index: 1; }
-
-    /* لما تدوسي مرتين الكارت "يتسحب" لبرة ويكبر */
-    .stack-card.active {
-        transform: scale(1.15) translateY(-30px) rotate(0deg) !important;
-        z-index: 100 !important;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    }
+    /* توزيع أولي للكروت فوق بعض */
+    .stack-card:nth-child(1) { transform: translateZ(0px) rotate(0deg); z-index: 3; }
+    .stack-card:nth-child(2) { transform: translateZ(-20px) rotate(3deg) translateY(10px); z-index: 2; opacity: 0.9; }
+    .stack-card:nth-child(3) { transform: translateZ(-40px) rotate(-3deg) translateY(20px); z-index: 1; opacity: 0.8; }
 
     .stack-card img, .stack-card video {
         width: 100%;
         height: 85%;
         object-fit: cover;
-        border-radius: 10px;
+        border-radius: 12px;
     }
 
-    .card-label {
-        margin-top: 10px;
-        font-family: 'Quicksand', sans-serif;
-        font-weight: bold;
-        color: #d63384;
+    .card-label { margin-top: 10px; font-weight: bold; color: #d63384; }
+
+    /* الأنيميشن لما الكارت يطير */
+    .fly-away {
+        transform: translateX(150%) rotate(30deg) !important;
+        opacity: 0 !important;
     }
 </style>
 
 <script>
-    function openCard(card) {
-        // لو الكارت مفتوح رجعيه مكانه، لو مقفول افتحيه
-        if (card.classList.contains('active')) {
-            card.classList.remove('active');
-        } else {
-            // نقفل أي كارت تاني مفتوح الأول
-            document.querySelectorAll('.stack-card').forEach(c => c.classList.remove('active'));
-            card.classList.add('active');
-        }
+    function rotateCard() {
+        const stack = document.getElementById('cardStack');
+        const cards = stack.children;
+        if (cards.length === 0) return;
+
+        const topCard = cards[0]; // أول كارت فوق
+
+        // 1. نخليه يطير لبرة
+        topCard.classList.add('fly-away');
+
+        // 2. بعد ما يخلص الطيران، ننقله لآخر الرصة تحت ونرجعه تاني
+        setTimeout(() => {
+            topCard.classList.remove('fly-away');
+            stack.appendChild(topCard); // بينقله أوتوماتيك لآخر الـ Div
+            updateCardPositions();
+        }, 600);
+    }
+
+    function updateCardPositions() {
+        const cards = document.querySelectorAll('.stack-card');
+        cards.forEach((card, index) => {
+            // إعادة ترتيب الـ z-index والـ transform لكل الكروت
+            card.style.zIndex = cards.length - index;
+            card.style.opacity = 1 - (index * 0.1);
+            card.style.transform = `translateZ(-${index * 20}px) translateY(${index * 10}px) rotate(${index % 2 === 0 ? index * 2 : -index * 2}deg)`;
+        });
     }
 </script>
 <footer>I love you | Mwah 💋</footer>
